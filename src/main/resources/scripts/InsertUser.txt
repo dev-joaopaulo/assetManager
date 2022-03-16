@@ -1,0 +1,1 @@
+Insert into assets.User(email, login, name, password) values ("admin@admin.com", "admin", "admin", "$2a$10$dR8EEiTqeeUBKHPmIuz7b.YlBaJcsb1XDY6UsYw7rH26KP/GemAmq");
