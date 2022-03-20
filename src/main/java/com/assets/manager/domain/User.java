@@ -1,6 +1,6 @@
 package com.assets.manager.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,7 +10,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Data
+@Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
