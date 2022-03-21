@@ -1,12 +1,11 @@
-package com.assets.manager.api.security;
+package com.assets.manager.config.security;
 
-import com.assets.manager.domain.User;
-import com.assets.manager.domain.UserRepository;
+import com.assets.manager.models.User;
+import com.assets.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service(value = "userDetailsService")

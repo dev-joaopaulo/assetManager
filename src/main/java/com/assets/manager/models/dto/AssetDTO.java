@@ -1,6 +1,6 @@
-package com.assets.manager.domain.dto;
+package com.assets.manager.models.dto;
 
-import com.assets.manager.domain.Asset;
+import com.assets.manager.models.Asset;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 

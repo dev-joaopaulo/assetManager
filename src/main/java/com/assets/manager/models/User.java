@@ -1,4 +1,4 @@
-package com.assets.manager.domain;
+package com.assets.manager.models;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,11 +1,12 @@
-package com.assets.manager.domain;
+package com.assets.manager.services;
 
-import com.assets.manager.domain.dto.AssetDTO;
+import com.assets.manager.models.Asset;
+import com.assets.manager.models.dto.AssetDTO;
+import com.assets.manager.repositories.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

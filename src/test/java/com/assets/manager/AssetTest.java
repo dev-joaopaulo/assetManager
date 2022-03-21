@@ -1,16 +1,12 @@
 package com.assets.manager;
 
-import com.assets.manager.domain.Asset;
-import com.assets.manager.domain.AssetService;
-import com.assets.manager.domain.dto.AssetDTO;
+import com.assets.manager.models.Asset;
+import com.assets.manager.services.AssetService;
+import com.assets.manager.models.dto.AssetDTO;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;

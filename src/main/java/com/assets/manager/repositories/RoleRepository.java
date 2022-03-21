@@ -1,5 +1,6 @@
-package com.assets.manager.domain;
+package com.assets.manager.repositories;
 
+import com.assets.manager.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {

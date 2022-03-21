@@ -1,10 +1,8 @@
-package com.assets.manager.api;
+package com.assets.manager.controllers;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/")

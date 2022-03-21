@@ -1,7 +1,7 @@
 package com.assets.manager;
 
-import com.assets.manager.domain.AssetService;
-import com.assets.manager.domain.dto.AssetDTO;
+import com.assets.manager.services.AssetService;
+import com.assets.manager.models.dto.AssetDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

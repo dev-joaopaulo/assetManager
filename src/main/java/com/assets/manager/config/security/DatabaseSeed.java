@@ -1,15 +1,14 @@
-package com.assets.manager.api.security;
+package com.assets.manager.config.security;
 
-import com.assets.manager.domain.Role;
-import com.assets.manager.domain.RoleRepository;
-import com.assets.manager.domain.User;
-import com.assets.manager.domain.UserRepository;
+import com.assets.manager.models.Role;
+import com.assets.manager.repositories.RoleRepository;
+import com.assets.manager.models.User;
+import com.assets.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class DatabaseSeed {

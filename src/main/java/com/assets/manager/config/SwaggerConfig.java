@@ -1,4 +1,4 @@
-package com.assets.manager.api;
+package com.assets.manager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

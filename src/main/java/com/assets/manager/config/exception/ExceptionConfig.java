@@ -1,4 +1,4 @@
-package com.assets.manager.api.exception;
+package com.assets.manager.config.exception;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

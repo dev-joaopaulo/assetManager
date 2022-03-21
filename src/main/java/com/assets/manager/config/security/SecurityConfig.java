@@ -1,4 +1,4 @@
-package com.assets.manager.api.security;
+package com.assets.manager.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
