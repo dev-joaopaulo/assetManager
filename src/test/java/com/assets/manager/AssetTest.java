@@ -1,20 +1,27 @@
 package com.assets.manager;
 
 import com.assets.manager.models.Asset;
+import com.assets.manager.models.Broker;
 import com.assets.manager.services.AssetService;
+import com.assets.manager.services.BrokerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 @SpringBootTest
+@Transactional
 public class AssetTest {
 
     @Autowired
     private AssetService assetService;
+
+    @Autowired
+    private BrokerService brokerService;
 
     @Test
     public void insertTest(){
@@ -62,7 +69,31 @@ public class AssetTest {
         assetService.delete(assetReturned2.getId());
 
         assertEquals(0, assetService.getAssets().size());
+    }
 
+    @Test
+    public void insertAssetBroker(){
+
+        Broker broker = new Broker();
+        broker.setName("CLEAR");
+
+        Broker savedBroker = brokerService.insert(broker);
+
+        Asset asset1 = Asset.builder()
+                .assetClass("Fixed")
+                .type("Tesouro Direto")
+                .broker(savedBroker)
+                .name("NTNB 2031")
+                .initialValue(10000.59F)
+                .build();
+
+        Asset savedAsset = assetService.insert(asset1);
+        assertNotNull(savedAsset);
+        assertNotNull(savedAsset.getBroker());
+        assertNotNull(savedAsset.getType());
+
+        Broker updatedBroker = brokerService.getBrokerById(savedBroker.getId()).get();
+        assertTrue(updatedBroker.getAssets().size()>0);
 
     }
 }

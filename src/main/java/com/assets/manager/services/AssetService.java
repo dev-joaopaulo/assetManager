@@ -1,7 +1,9 @@
 package com.assets.manager.services;
 
 import com.assets.manager.models.Asset;
+import com.assets.manager.models.Broker;
 import com.assets.manager.repositories.AssetRepository;
+import com.assets.manager.repositories.BrokerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,6 +17,9 @@ public class AssetService {
 
     @Autowired
     private AssetRepository assetRepository;
+
+    @Autowired
+    private BrokerRepository brokerRepository;
 
     public List<Asset> getAssets(){
         return assetRepository.findAll();
@@ -30,7 +35,15 @@ public class AssetService {
 
     public Asset insert(Asset asset) {
         Assert.isNull(asset.getId(), "It was not possible to insert record");
-        return assetRepository.save(asset);
+        Asset savedAsset = assetRepository.save(asset);
+
+        if(savedAsset.getBroker() != null){
+            Broker broker = brokerRepository.getById(savedAsset.getBroker().getId());
+            broker.getAssets().add(savedAsset);
+            brokerRepository.save(broker);
+        }
+
+        return savedAsset;
     }
 
     public Asset update(Long id, Asset asset) {
