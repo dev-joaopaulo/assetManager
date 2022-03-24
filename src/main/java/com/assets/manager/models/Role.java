@@ -1,15 +1,14 @@
 package com.assets.manager.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter @Setter
 @Builder @AllArgsConstructor @NoArgsConstructor
 public class Role implements GrantedAuthority {
     @Id
@@ -17,6 +16,9 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<User>();
 
     @Override
     public String getAuthority() {
