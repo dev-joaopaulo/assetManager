@@ -52,8 +52,7 @@ public class AssetService {
         Optional<Asset> optionalAsset = getAssetsById(id);
         if(optionalAsset.isPresent()){
             Asset db = optionalAsset.get();
-            db.setName(asset.getName());
-            db.setType(asset.getType());
+            db.setCurrentValue(asset.getCurrentValue());
 
             return assetRepository.save(db);
         } else{

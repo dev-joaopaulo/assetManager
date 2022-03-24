@@ -94,6 +94,5 @@ public class AssetTest {
 
         Broker updatedBroker = brokerService.getBrokerById(savedBroker.getId()).get();
         assertTrue(updatedBroker.getAssets().size()>0);
-
     }
 }
