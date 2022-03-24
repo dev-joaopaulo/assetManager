@@ -1,7 +1,7 @@
 package com.assets.manager;
 
+import com.assets.manager.models.Asset;
 import com.assets.manager.services.AssetService;
-import com.assets.manager.models.dto.AssetDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,9 +20,9 @@ public class AssetApiTest {
     @Autowired
     private AssetService service;
 
-    private ResponseEntity<AssetDTO> getAsset(String url){
+    private ResponseEntity<Asset> getAsset(String url){
         return
-                rest.withBasicAuth("admin", "admin").getForEntity(url, AssetDTO.class);
+                rest.withBasicAuth("admin", "admin").getForEntity(url, Asset.class);
     }
 
     @Test

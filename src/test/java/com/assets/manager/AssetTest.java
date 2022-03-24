@@ -2,7 +2,6 @@ package com.assets.manager;
 
 import com.assets.manager.models.Asset;
 import com.assets.manager.services.AssetService;
-import com.assets.manager.models.dto.AssetDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,14 +23,14 @@ public class AssetTest {
         asset.setName("assetNameTest");
         asset.setType("assetTypeTest");
 
-        AssetDTO assetDTO = assetService.insert(asset);
+        Asset assetReturned = assetService.insert(asset);
 
-        assertNotNull(assetDTO);
+        assertNotNull(assetReturned);
 
-        Long id = assetDTO.getId();
+        Long id = assetReturned.getId();
         assertNotNull(id);
 
-        Optional<AssetDTO> optional = assetService.getAssetsById(id);
+        Optional<Asset> optional = assetService.getAssetsById(id);
         assertTrue(optional.isPresent());
 
         assertEquals("assetNameTest", optional.get().getName());
@@ -54,13 +53,13 @@ public class AssetTest {
         asset2.setName("assetNameTest");
         asset2.setType("assetTypeTest");
 
-        AssetDTO assetDTO1 = assetService.insert(asset1);
-        AssetDTO assetDTO2 = assetService.insert(asset2);
+        Asset assetReturned1 = assetService.insert(asset1);
+        Asset assetReturned2 = assetService.insert(asset2);
 
         assertEquals(2,assetService.getAssets().size());
 
-        assetService.delete(assetDTO1.getId());
-        assetService.delete(assetDTO2.getId());
+        assetService.delete(assetReturned1.getId());
+        assetService.delete(assetReturned2.getId());
 
         assertEquals(0, assetService.getAssets().size());
 

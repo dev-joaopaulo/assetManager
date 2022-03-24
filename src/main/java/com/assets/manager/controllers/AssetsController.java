@@ -2,7 +2,6 @@ package com.assets.manager.controllers;
 
 import com.assets.manager.models.Asset;
 import com.assets.manager.services.AssetService;
-import com.assets.manager.models.dto.AssetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -21,16 +20,16 @@ public class AssetsController {
     AssetService assetService;
 
     @GetMapping("/get-assets")
-    public ResponseEntity<List<AssetDTO>> getAssets(){
-        List<AssetDTO> assets = assetService.getAssets();
+    public ResponseEntity<List<Asset>> getAssets(){
+        List<Asset> assets = assetService.getAssets();
         return assets.iterator().hasNext() ?
                 ResponseEntity.ok(assets) :
                 ResponseEntity.notFound().build();
     }
 
     @GetMapping("/get-assets/{id}")
-    public ResponseEntity<Optional<AssetDTO>> getAssets(@PathVariable Long id){
-        Optional<AssetDTO> asset = assetService.getAssetsById(id);
+    public ResponseEntity<Optional<Asset>> getAssets(@PathVariable Long id){
+        Optional<Asset> asset = assetService.getAssetsById(id);
         return asset.isPresent() ?
                 ResponseEntity.ok(asset) :
                 ResponseEntity.notFound().build();
@@ -47,7 +46,7 @@ public class AssetsController {
     @PostMapping("/create")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody Asset asset){
-            AssetDTO a = assetService.insert(asset);
+            Asset a = assetService.insert(asset);
             URI location = getUri(asset.getId());
             return ResponseEntity.created(location).build();
     }
@@ -60,7 +59,7 @@ public class AssetsController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Asset asset){
-        AssetDTO assetUpdated = assetService.update(id, asset);
+        Asset assetUpdated = assetService.update(id, asset);
         return assetUpdated != null ?
                 ResponseEntity.ok(assetUpdated) :
                 ResponseEntity.notFound().build();
