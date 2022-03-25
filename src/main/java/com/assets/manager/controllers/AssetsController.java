@@ -1,6 +1,6 @@
 package com.assets.manager.controllers;
 
-import com.assets.manager.models.Asset;
+import com.assets.manager.domain.models.Asset;
 import com.assets.manager.services.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

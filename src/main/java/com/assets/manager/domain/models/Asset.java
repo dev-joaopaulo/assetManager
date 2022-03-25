@@ -1,9 +1,8 @@
-package com.assets.manager.models;
+package com.assets.manager.domain.models;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Currency;
 
 @Entity
 @Getter @Setter

@@ -1,6 +1,6 @@
 package com.assets.manager;
 
-import com.assets.manager.models.Asset;
+import com.assets.manager.domain.models.Asset;
 import com.assets.manager.services.AssetService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

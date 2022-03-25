@@ -1,7 +1,7 @@
 package com.assets.manager;
 
-import com.assets.manager.models.Asset;
-import com.assets.manager.models.Broker;
+import com.assets.manager.domain.models.Asset;
+import com.assets.manager.domain.models.Broker;
 import com.assets.manager.services.AssetService;
 import com.assets.manager.services.BrokerService;
 import org.junit.jupiter.api.Test;

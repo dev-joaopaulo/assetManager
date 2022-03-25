@@ -1,7 +1,7 @@
 package com.assets.manager.services;
 
-import com.assets.manager.models.Asset;
-import com.assets.manager.models.Broker;
+import com.assets.manager.domain.models.Asset;
+import com.assets.manager.domain.models.Broker;
 import com.assets.manager.repositories.AssetRepository;
 import com.assets.manager.repositories.BrokerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AssetService {

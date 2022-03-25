@@ -1,8 +1,8 @@
 package com.assets.manager.config.security;
 
-import com.assets.manager.models.Role;
+import com.assets.manager.domain.models.Role;
 import com.assets.manager.repositories.RoleRepository;
-import com.assets.manager.models.User;
+import com.assets.manager.domain.models.User;
 import com.assets.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -11,10 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Component
 @Transactional

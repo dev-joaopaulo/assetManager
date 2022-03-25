@@ -1,6 +1,6 @@
 package com.assets.manager.services;
 
-import com.assets.manager.models.Broker;
+import com.assets.manager.domain.models.Broker;
 import com.assets.manager.repositories.BrokerRepository;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
