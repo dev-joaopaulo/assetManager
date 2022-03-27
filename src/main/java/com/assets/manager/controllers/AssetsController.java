@@ -19,7 +19,7 @@ public class AssetsController {
     @Autowired
     AssetService assetService;
 
-    @GetMapping("/get-assets")
+    @GetMapping()
     public ResponseEntity<List<Asset>> getAssets(){
         List<Asset> assets = assetService.getAssets();
         return assets.iterator().hasNext() ?
@@ -27,7 +27,7 @@ public class AssetsController {
                 ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/get-assets/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Asset>> getAssets(@PathVariable Long id){
         Optional<Asset> asset = assetService.getAssetsById(id);
         return asset.isPresent() ?
@@ -43,7 +43,7 @@ public class AssetsController {
                 ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody Asset asset){
             Asset a = assetService.insert(asset);
@@ -52,12 +52,11 @@ public class AssetsController {
     }
 
     private URI getUri(Long id){
-        URI uri = URI.create("http://localhost:8080/api/v1/assets/get-assets");
-        return ServletUriComponentsBuilder.fromUri(uri).path("/{id}")
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(id).toUri();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Asset asset){
         Asset assetUpdated = assetService.update(id, asset);
         return assetUpdated != null ?
@@ -65,7 +64,7 @@ public class AssetsController {
                 ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
         assetService.delete(id);
         return ResponseEntity.ok().build();
