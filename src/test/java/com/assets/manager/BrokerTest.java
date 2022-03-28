@@ -1,7 +1,7 @@
 package com.assets.manager;
 
-import com.assets.manager.domain.models.Broker;
-import com.assets.manager.services.BrokerService;
+import com.assets.manager.broker.Broker;
+import com.assets.manager.broker.BrokerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

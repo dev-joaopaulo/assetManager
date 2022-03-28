@@ -1,5 +1,6 @@
-package com.assets.manager.domain.models;
+package com.assets.manager.role;
 
+import com.assets.manager.user.User;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 

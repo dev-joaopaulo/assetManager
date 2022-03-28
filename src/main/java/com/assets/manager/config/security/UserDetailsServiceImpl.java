@@ -1,7 +1,7 @@
 package com.assets.manager.config.security;
 
-import com.assets.manager.domain.models.User;
-import com.assets.manager.repositories.UserRepository;
+import com.assets.manager.user.User;
+import com.assets.manager.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

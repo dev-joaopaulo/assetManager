@@ -1,4 +1,4 @@
-package com.assets.manager.domain.types;
+package com.assets.manager.types;
 
 import java.util.ArrayList;
 import java.util.List;

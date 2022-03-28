@@ -1,7 +1,7 @@
 package com.assets.manager.config.security.jwt;
 
-import com.assets.manager.domain.dto.UserDTO;
-import com.assets.manager.domain.models.User;
+import com.assets.manager.user.UserDTO;
+import com.assets.manager.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,5 @@
-package com.assets.manager.domain.dto;
+package com.assets.manager.user;
 
-import com.assets.manager.domain.models.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;

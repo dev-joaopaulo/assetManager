@@ -1,9 +1,7 @@
-package com.assets.manager.services;
+package com.assets.manager.asset;
 
-import com.assets.manager.domain.models.Asset;
-import com.assets.manager.domain.models.Broker;
-import com.assets.manager.repositories.AssetRepository;
-import com.assets.manager.repositories.BrokerRepository;
+import com.assets.manager.broker.Broker;
+import com.assets.manager.broker.BrokerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

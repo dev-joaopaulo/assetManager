@@ -1,7 +1,6 @@
-package com.assets.manager.repositories;
+package com.assets.manager.asset;
 
 
-import com.assets.manager.domain.models.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AssetRepository extends JpaRepository<Asset, Long> {

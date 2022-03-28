@@ -1,6 +1,5 @@
-package com.assets.manager.repositories;
+package com.assets.manager.broker;
 
-import com.assets.manager.domain.models.Broker;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BrokerRepository extends JpaRepository<Broker, Long> {

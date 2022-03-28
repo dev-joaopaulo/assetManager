@@ -1,9 +1,9 @@
 package com.assets.manager.config.security;
 
-import com.assets.manager.domain.models.Role;
-import com.assets.manager.repositories.RoleRepository;
-import com.assets.manager.domain.models.User;
-import com.assets.manager.repositories.UserRepository;
+import com.assets.manager.role.Role;
+import com.assets.manager.role.RoleRepository;
+import com.assets.manager.user.User;
+import com.assets.manager.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;

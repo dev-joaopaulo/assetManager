@@ -1,6 +1,6 @@
 package com.assets.manager;
 
-import com.assets.manager.domain.models.Asset;
+import com.assets.manager.asset.Asset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

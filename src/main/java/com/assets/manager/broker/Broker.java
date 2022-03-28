@@ -1,5 +1,6 @@
-package com.assets.manager.domain.models;
+package com.assets.manager.broker;
 
+import com.assets.manager.asset.Asset;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,5 +1,6 @@
-package com.assets.manager.domain.models;
+package com.assets.manager.asset;
 
+import com.assets.manager.broker.Broker;
 import lombok.*;
 
 import javax.persistence.*;
