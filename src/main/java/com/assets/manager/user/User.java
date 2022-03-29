@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles",
         joinColumns = { @JoinColumn(name = "fk_user") },
         inverseJoinColumns = { @JoinColumn(name = "fk_role") })
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<Role> roles = new HashSet<>();
 
     public static void main(String[] args){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

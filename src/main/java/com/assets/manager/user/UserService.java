@@ -13,8 +13,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<UserDTO> getUsers(){
-        List<UserDTO> list = userRepository.findAll().stream().map(UserDTO::create).collect(Collectors.toList());
-        return list;
+        return  userRepository.findAll().stream().map(UserDTO::create).collect(Collectors.toList());
     }
 
 }
