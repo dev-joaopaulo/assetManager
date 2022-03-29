@@ -1,6 +1,7 @@
 package com.assets.manager.asset;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,9 @@ public class AssetsController {
     AssetService assetService;
 
     @GetMapping()
-    public ResponseEntity<List<Asset>> getAssets(){
-        List<Asset> assets = assetService.getAssets();
+    public ResponseEntity<List<Asset>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(value = "size", defaultValue = "10") Integer size){
+        List<Asset> assets = assetService.getAssets(PageRequest.of(page, size)).toList();
         return assets.iterator().hasNext() ?
                 ResponseEntity.ok(assets) :
                 ResponseEntity.notFound().build();
@@ -44,7 +46,6 @@ public class AssetsController {
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody Asset asset){
-            Asset a = assetService.insert(asset);
             URI location = getUri(asset.getId());
             return ResponseEntity.created(location).build();
     }
