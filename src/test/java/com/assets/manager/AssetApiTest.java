@@ -53,14 +53,14 @@ public class AssetApiTest extends BaseAPITest{
         assertEquals("assetNameTest", createdAsset.getName());
         assertEquals("assetTypeTest", createdAsset.getType());
 
-        createdAsset.setCurrentValue(50.38F);
+        createdAsset.setCurrentPrice(50.38F);
 
         put(location, createdAsset, Asset.class);
 
         Asset updatedAsset = getAsset(location).getBody();
 
         assertNotNull(updatedAsset);
-        assertEquals(50.38F, updatedAsset.getCurrentValue(), 0.0005F);
+        assertEquals(50.38F, updatedAsset.getCurrentPrice(), 0.0005F);
 
         delete(location, ResponseEntity.class);
 

@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AssetService {
@@ -19,16 +21,23 @@ public class AssetService {
     @Autowired
     private BrokerRepository brokerRepository;
 
-    public Page<Asset> getAssets(Pageable pageable){
-        return assetRepository.findAll(pageable);
+    public List<AssetDTO> getAssets(Pageable pageable){
+        return assetRepository.
+                findAll(pageable).
+                stream().
+                map(AssetDTO::create).collect(Collectors.toList());
     }
 
-    public Optional<Asset> getAssetsById(Long id) {
-        return assetRepository.findById(id);
+    public Optional<AssetDTO> getAssetsById(Long id) {
+
+        return assetRepository.findById(id).map(AssetDTO::create);
     }
 
-    public Iterable<Asset> getAssetsByType(String type) {
-        return assetRepository.findByType(type);
+    public List<AssetDTO> getAssetsByType(String type) {
+        return assetRepository.findByType(type)
+                .stream()
+                .map(AssetDTO::create)
+                .collect(Collectors.toList());
     }
 
     public Asset insert(Asset asset) {
@@ -44,15 +53,15 @@ public class AssetService {
         return savedAsset;
     }
 
-    public Asset update(Long id, Asset asset) {
+    public AssetDTO update(Long id, AssetDTO asset) {
         Assert.notNull(id, "Not possible to update asset entry");
 
-        Optional<Asset> optionalAsset = getAssetsById(id);
+        Optional<Asset> optionalAsset = assetRepository.findById(id);
         if(optionalAsset.isPresent()){
             Asset db = optionalAsset.get();
-            db.setCurrentValue(asset.getCurrentValue());
+            db.setCurrentPrice(asset.getCurrentPrice());
 
-            return assetRepository.save(db);
+            return AssetDTO.create(assetRepository.save(db));
         } else{
             throw new RuntimeException("Not possible to update asset entry");
         }

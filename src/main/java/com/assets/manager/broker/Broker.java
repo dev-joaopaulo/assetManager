@@ -19,6 +19,7 @@ public class Broker {
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
+    private String description;
 
     @OneToMany
     private Set<Asset> assets = new HashSet<>();

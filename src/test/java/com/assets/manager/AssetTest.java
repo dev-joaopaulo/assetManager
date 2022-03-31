@@ -1,6 +1,7 @@
 package com.assets.manager;
 
 import com.assets.manager.asset.Asset;
+import com.assets.manager.asset.AssetDTO;
 import com.assets.manager.broker.Broker;
 import com.assets.manager.asset.AssetService;
 import com.assets.manager.broker.BrokerService;
@@ -38,7 +39,7 @@ class AssetTest {
         Long id = assetReturned.getId();
         assertNotNull(id);
 
-        Optional<Asset> optional = assetService.getAssetsById(id);
+        Optional<AssetDTO> optional = assetService.getAssetsById(id);
         assertTrue(optional.isPresent());
 
         assertEquals("assetNameTest", optional.get().getName());
@@ -64,12 +65,12 @@ class AssetTest {
         Asset assetReturned1 = assetService.insert(asset1);
         Asset assetReturned2 = assetService.insert(asset2);
 
-        assertEquals(2,assetService.getAssets(PageRequest.of(0,10)).toList().size());
+        assertEquals(2,assetService.getAssets(PageRequest.of(0,10)).size());
 
         assetService.delete(assetReturned1.getId());
         assetService.delete(assetReturned2.getId());
 
-        assertEquals(0, assetService.getAssets(PageRequest.of(0,10)).toList().size());
+        assertEquals(0, assetService.getAssets(PageRequest.of(0,10)).size());
     }
 
     @Test
@@ -85,13 +86,13 @@ class AssetTest {
                 .type("Tesouro Direto")
                 .broker(savedBroker)
                 .name("NTNB 2031")
-                .initialValue(10000.59F)
+                .averagePrice(10000.59F)
                 .build();
 
         Asset savedAsset = assetService.insert(asset1);
         assertNotNull(savedAsset);
-        assertNotNull(savedAsset.getBroker());
-        assertNotNull(savedAsset.getType());
+        assertEquals(savedBroker.getId(), savedAsset.getBroker().getId());
+        assertEquals("Tesouro Direto" ,savedAsset.getType());
 
         Broker updatedBroker = brokerService.getBrokerById(savedBroker.getId()).get();
         assertTrue(updatedBroker.getAssets().size()>0);

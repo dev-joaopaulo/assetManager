@@ -19,25 +19,25 @@ public class AssetsController {
     AssetService assetService;
 
     @GetMapping()
-    public ResponseEntity<List<Asset>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<List<AssetDTO>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                  @RequestParam(value = "size", defaultValue = "10") Integer size){
-        List<Asset> assets = assetService.getAssets(PageRequest.of(page, size)).toList();
+        List<AssetDTO> assets = assetService.getAssets(PageRequest.of(page, size));
         return assets.iterator().hasNext() ?
                 ResponseEntity.ok(assets) :
                 ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Asset>> getAssets(@PathVariable Long id){
-        Optional<Asset> asset = assetService.getAssetsById(id);
+    public ResponseEntity<Optional<AssetDTO>> getAssets(@PathVariable Long id){
+        Optional<AssetDTO> asset = assetService.getAssetsById(id);
         return asset.isPresent() ?
                 ResponseEntity.ok(asset) :
                 ResponseEntity.notFound().build();
     }
 
     @GetMapping("/get-assets-by-type/{type}")
-    public ResponseEntity<Iterable<Asset>> getAssetsByType(@PathVariable String type){
-        Iterable<Asset> assets = assetService.getAssetsByType(type);
+    public ResponseEntity<Iterable<AssetDTO>> getAssetsByType(@PathVariable String type){
+        List<AssetDTO> assets = assetService.getAssetsByType(type);
         return assets.iterator().hasNext() ?
                 ResponseEntity.ok(assets) :
                 ResponseEntity.noContent().build();
@@ -45,9 +45,11 @@ public class AssetsController {
 
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity create(@RequestBody Asset asset){
-            URI location = getUri(asset.getId());
-            return ResponseEntity.created(location).build();
+    public ResponseEntity create(@RequestBody AssetDTO assetDTO){
+        Asset asset = AssetDTO.reverseMap(assetDTO);
+        Asset a = assetService.insert(asset);
+        URI location = getUri(a.getId());
+        return ResponseEntity.created(location).build();
     }
 
     private URI getUri(Long id){
@@ -56,8 +58,8 @@ public class AssetsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Asset asset){
-        Asset assetUpdated = assetService.update(id, asset);
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody AssetDTO asset){
+        AssetDTO assetUpdated = assetService.update(id, asset);
         return assetUpdated != null ?
                 ResponseEntity.ok(assetUpdated) :
                 ResponseEntity.notFound().build();
