@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
@@ -25,5 +26,6 @@ public class AssetRecord {
     private float averageCostPerShare;
     private int quantity;
     private String operationType; // buy or sell
+    private LocalDate operationDate;
 
 }

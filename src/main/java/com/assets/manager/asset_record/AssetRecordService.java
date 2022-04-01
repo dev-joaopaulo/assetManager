@@ -7,6 +7,7 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class AssetRecordService {
 
         Assert.notNull(assetRecordDTO.getAsset().getId(), "It was not possible to insert asset record");
 
+        assetRecordDTO.setOperationDate(LocalDate.now());
         AssetRecord assetRecord = AssetRecordDTO.reverseMap(assetRecordDTO);
         AssetRecord insertedRecord = recordRepository.save(assetRecord);
 
