@@ -9,4 +9,6 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
 
     List<Asset> findByType(String type);
 
+    List<Asset> findByTicker(String ticker);
+
 }

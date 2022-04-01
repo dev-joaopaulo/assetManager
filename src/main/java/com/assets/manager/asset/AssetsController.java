@@ -11,6 +11,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import static com.assets.manager.util.UriUtil.getUri;
+
 @RestController
 @RequestMapping("/api/v1/assets")
 public class AssetsController {
@@ -47,15 +49,12 @@ public class AssetsController {
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody AssetDTO assetDTO){
         Asset asset = AssetDTO.reverseMap(assetDTO);
-        Asset a = assetService.insert(asset);
+        AssetDTO a = assetService.insert(asset);
         URI location = getUri(a.getId());
         return ResponseEntity.created(location).build();
     }
 
-    private URI getUri(Long id){
-        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(id).toUri();
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody AssetDTO asset){

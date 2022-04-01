@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class AssetService {
                 .collect(Collectors.toList());
     }
 
-    public Asset insert(Asset asset) {
+    public AssetDTO insert(Asset asset) {
         Assert.isNull(asset.getId(), "It was not possible to insert record");
         Asset savedAsset = assetRepository.save(asset);
 
@@ -50,7 +51,7 @@ public class AssetService {
             brokerRepository.save(broker);
         }
 
-        return savedAsset;
+        return AssetDTO.create(savedAsset);
     }
 
     public AssetDTO update(Long id, AssetDTO asset) {
@@ -69,5 +70,17 @@ public class AssetService {
 
     public void delete(Long id) {
         assetRepository.deleteById(id);
+    }
+
+    private boolean isExistingAsset(Asset asset){
+       List<Asset> existingAssets =  assetRepository.findByTicker(asset.getTicker());
+       if(existingAssets.iterator().hasNext()){
+           for (Asset a : existingAssets) {
+               if(Objects.equals(asset.getBroker().getId(), a.getBroker().getId())){
+                   return true;
+               }
+           }
+       }
+       return false;
     }
 }

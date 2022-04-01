@@ -32,7 +32,7 @@ class AssetTest {
         asset.setName("assetNameTest");
         asset.setType("assetTypeTest");
 
-        Asset assetReturned = assetService.insert(asset);
+        AssetDTO assetReturned = assetService.insert(asset);
 
         assertNotNull(assetReturned);
 
@@ -62,8 +62,8 @@ class AssetTest {
         asset2.setName("assetNameTest");
         asset2.setType("assetTypeTest");
 
-        Asset assetReturned1 = assetService.insert(asset1);
-        Asset assetReturned2 = assetService.insert(asset2);
+        AssetDTO assetReturned1 = assetService.insert(asset1);
+        AssetDTO assetReturned2 = assetService.insert(asset2);
 
         assertEquals(2,assetService.getAssets(PageRequest.of(0,10)).size());
 
@@ -89,7 +89,7 @@ class AssetTest {
                 .averagePrice(10000.59F)
                 .build();
 
-        Asset savedAsset = assetService.insert(asset1);
+        AssetDTO savedAsset = assetService.insert(asset1);
         assertNotNull(savedAsset);
         assertEquals(savedBroker.getId(), savedAsset.getBroker().getId());
         assertEquals("Tesouro Direto" ,savedAsset.getType());

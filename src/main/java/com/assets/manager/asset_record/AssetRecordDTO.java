@@ -22,4 +22,9 @@ public class AssetRecordDTO {
         return modelMapper.map(assetRecord, AssetRecordDTO.class);
     }
 
+    public static AssetRecord reverseMap(AssetRecordDTO assetRecordDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(assetRecordDTO, AssetRecord.class);
+    }
+
 }

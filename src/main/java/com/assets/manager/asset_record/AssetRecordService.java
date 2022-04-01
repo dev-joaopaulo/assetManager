@@ -7,6 +7,9 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AssetRecordService {
 
@@ -16,9 +19,18 @@ public class AssetRecordService {
     @Autowired
     private AssetRepository assetRepository;
 
-    public AssetRecordDTO insert(AssetRecord assetRecord){
+    public List<AssetRecordDTO> getRecords(){
+        return recordRepository.findAll()
+                .stream()
+                .map(AssetRecordDTO::create)
+                .collect(Collectors.toList());
+    }
 
-        Assert.isNull(assetRecord.getAsset().getId(), "It was not possible to insert asset record");
+    public AssetRecordDTO insert(AssetRecordDTO assetRecordDTO){
+
+        Assert.notNull(assetRecordDTO.getAsset().getId(), "It was not possible to insert asset record");
+
+        AssetRecord assetRecord = AssetRecordDTO.reverseMap(assetRecordDTO);
         AssetRecord insertedRecord = recordRepository.save(assetRecord);
 
         Asset asset = assetRepository.getById(assetRecord.getAsset().getId());
