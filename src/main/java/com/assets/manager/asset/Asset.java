@@ -23,7 +23,7 @@ public class Asset {
     private String name;
     private String ticker;
     private int quantity;
-    private float averagePrice;
+    private float totalCost;
     private float currentPrice;
 
     @ManyToOne

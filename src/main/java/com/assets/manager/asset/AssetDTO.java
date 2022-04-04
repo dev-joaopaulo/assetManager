@@ -22,7 +22,7 @@ public class AssetDTO {
     private String name;
     private String ticker;
     private int quantity;
-    private float averagePrice;
+    private float totalCost;
     private float currentPrice;
     private Broker broker;
     private Set<AssetRecord> assetRecords;
@@ -35,5 +35,9 @@ public class AssetDTO {
     public static Asset reverseMap(AssetDTO assetDTO){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(assetDTO, Asset.class);
+    }
+
+    public float getAveragePrice(){
+        return totalCost/quantity;
     }
 }

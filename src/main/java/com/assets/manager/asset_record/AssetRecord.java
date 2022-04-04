@@ -1,16 +1,14 @@
 package com.assets.manager.asset_record;
 
 import com.assets.manager.asset.Asset;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@Builder @NoArgsConstructor @AllArgsConstructor
 public class AssetRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
