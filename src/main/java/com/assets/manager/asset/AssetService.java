@@ -1,6 +1,7 @@
 package com.assets.manager.asset;
 
 import com.assets.manager.asset_record.AssetRecord;
+import com.assets.manager.asset_record.AssetRecordDTO;
 import com.assets.manager.broker.Broker;
 import com.assets.manager.broker.BrokerRepository;
 import com.assets.manager.types.OperationType;
@@ -10,11 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class AssetService {
 
     @Autowired
@@ -45,14 +48,13 @@ public class AssetService {
     public AssetDTO insert(Asset asset) {
         Assert.isNull(asset.getId(), "It was not possible to insert record: null Asset");
         Assert.isTrue(!isExistingAsset(asset), "It was not possible to insert record: duplicated Asset");
+        Assert.notNull(asset.getBroker(), "Forbidden - Asset does not have a Broker");
 
         Asset savedAsset = assetRepository.save(asset);
 
-        if(savedAsset.getBroker() != null){
-            Broker broker = brokerRepository.getById(savedAsset.getBroker().getId());
-            broker.getAssets().add(savedAsset);
-            brokerRepository.save(broker);
-        }
+        Optional<Broker> optionalBroker = brokerRepository.findById(savedAsset.getBroker().getId());
+        optionalBroker.ifPresent(broker -> broker.getAssets().add(savedAsset));
+        brokerRepository.save(optionalBroker.get());
 
         return AssetDTO.create(savedAsset);
     }
@@ -60,20 +62,44 @@ public class AssetService {
     public AssetDTO update(Long id, AssetDTO asset) {
         Assert.notNull(id, "Not possible to update asset entry");
 
-        Optional<Asset> optionalAsset = assetRepository.findById(id);
+        Optional<AssetDTO> optionalAsset = getAssetsById(id);
         if(optionalAsset.isPresent()){
-            Asset dbAsset = optionalAsset.get();
+            AssetDTO dbAsset = optionalAsset.get();
+            dbAsset.setName(asset.getName());
             dbAsset.setAssetRecords(updateAssetRecordList(dbAsset.getAssetRecords(), asset.getAssetRecords()));
-            dbAsset.setTotalCost(updateAssetTotalCost(asset));
-            dbAsset.setQuantity(updateAssetQuantity(asset));
+            dbAsset.updateQuantityAndCost();
 
-            return AssetDTO.create(assetRepository.save(dbAsset));
+            return AssetDTO.create(assetRepository.save(AssetDTO.reverseMap(dbAsset)));
         } else{
             throw new RuntimeException("Not possible to update asset entry");
         }
     }
 
+    public AssetDTO updateAssetRecord(AssetRecordDTO assetRecordDTO) {
+        Long assetId = assetRecordDTO.getAsset().getId();
+        Optional<AssetDTO> optionalAssetDTO = getAssetsById(assetId);
+        if (optionalAssetDTO.isPresent()) {
+            AssetDTO assetDTO = optionalAssetDTO.get();
+            Set<AssetRecord> assetRecordsList = assetDTO.getAssetRecords();
+            for (AssetRecord assetRecord : assetRecordsList) {
+                if (Objects.equals(assetRecord.getId(), assetRecordDTO.getId())) {
+                    assetRecord = AssetRecordDTO.reverseMap(assetRecordDTO);
+                    assetDTO.updateQuantityAndCost();
+                }
+            }
+            return AssetDTO.create(
+                    assetRepository.save(AssetDTO.reverseMap(optionalAssetDTO.get()))
+            );
+        } else {
+            throw new RuntimeException("Not possible to update asset entry");
+        }
+    }
+
     public void delete(Long id) {
+
+        Asset asset = assetRepository.getById(id);
+        Assert.notNull(asset.getBroker(), "Forbidden - Asset does not have a Broker");
+        asset.getBroker().getAssets().remove(asset);
         assetRepository.deleteById(id);
     }
 
@@ -87,32 +113,6 @@ public class AssetService {
            }
        }
        return false;
-    }
-
-    private int updateAssetQuantity(AssetDTO assetDTO){
-        int updatedQuantity = 0;
-        Set<AssetRecord> assetRecordList = assetDTO.getAssetRecords();
-        for (AssetRecord assetRecord: assetRecordList) {
-            if(Objects.equals(assetRecord.getOperationType(), OperationType.BUY.toString())){
-                updatedQuantity += assetRecord.getQuantity();
-            } else {
-                updatedQuantity -= assetRecord.getQuantity();
-            }
-        }
-        return  updatedQuantity;
-    }
-
-    private float updateAssetTotalCost(AssetDTO assetDTO){
-        float updatedTotalCost = 0F;
-        Set<AssetRecord> assetRecordList = assetDTO.getAssetRecords();
-        for (AssetRecord assetRecord: assetRecordList) {
-            if(Objects.equals(assetRecord.getOperationType(), OperationType.BUY.toString())){
-                updatedTotalCost += assetRecord.getQuantity() * assetRecord.getAverageCostPerShare();
-            } else {
-                updatedTotalCost -= assetRecord.getQuantity() * assetDTO.getAveragePrice();
-            }
-        }
-        return  updatedTotalCost;
     }
 
     private Set<AssetRecord> updateAssetRecordList(Set<AssetRecord> existingList, Set<AssetRecord> updatedList){

@@ -30,6 +30,7 @@ public class BaseAPITest {
     HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         return headers;
     }
 
@@ -47,7 +48,8 @@ public class BaseAPITest {
 
     <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
         HttpHeaders headers = getHeaders();
-        return rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
+        ResponseEntity<T> response = rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
+        return response;
     }
 
     <T> ResponseEntity<T> get(String url, Class<T> responseType) {

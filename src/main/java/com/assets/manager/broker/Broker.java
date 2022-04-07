@@ -1,17 +1,16 @@
 package com.assets.manager.broker;
 
 import com.assets.manager.asset.Asset;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter @Setter
 @Builder @AllArgsConstructor @NoArgsConstructor
 public class Broker {
     @Id
@@ -21,6 +20,20 @@ public class Broker {
     private String name;
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Asset> assets = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Broker broker = (Broker) o;
+        return Objects.equals(id, broker.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -63,8 +63,10 @@ public class AssetRecordService {
             dbAssetRecord.setAsset(assetRecordDTO.getAsset());
             dbAssetRecord.setOperationDate(assetRecordDTO.getOperationDate());
             dbAssetRecord.setQuantity(assetRecordDTO.getQuantity());
-            dbAssetRecord.setAverageCostPerShare(dbAssetRecord.getAverageCostPerShare());
+            dbAssetRecord.setAverageCostPerShare(assetRecordDTO.getAverageCostPerShare());
             dbAssetRecord.setOperationType(assetRecordDTO.getOperationType());
+
+            assetService.updateAssetRecord(AssetRecordDTO.create(dbAssetRecord));
 
             return AssetRecordDTO.create(assetRecordRepository.save(dbAssetRecord));
         }

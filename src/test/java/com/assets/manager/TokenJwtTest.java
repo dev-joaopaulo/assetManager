@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Objects;
 
 import static junit.framework.TestCase.*;
 
@@ -46,8 +47,16 @@ public class TokenJwtTest {
         List<GrantedAuthority> roles = JwtUtil.getRoles(jwtToken);
         assertNotNull(roles);
         System.out.println(roles);
-        String role = roles.get(0).getAuthority();
-        assertEquals("ROLE_ADMIN", role);
+
+        boolean isRoleAdmin = false;
+
+        for(GrantedAuthority authority : roles){
+            if(Objects.equals(authority.getAuthority(), "ROLE_ADMIN")){
+                isRoleAdmin = true;
+            }
+        }
+
+        assertTrue(isRoleAdmin);
     }
 
 }

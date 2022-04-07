@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -33,7 +34,19 @@ public class Asset {
             inverseJoinColumns = @JoinColumn(name = "fk_broker"))
     private Broker broker;
 
-    @OneToMany
+    @OneToMany(mappedBy = "asset",  cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AssetRecord> assetRecords = new HashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asset asset = (Asset) o;
+        return Objects.equals(id, asset.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

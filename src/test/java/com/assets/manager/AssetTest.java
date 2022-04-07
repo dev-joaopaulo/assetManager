@@ -5,6 +5,7 @@ import com.assets.manager.asset.AssetDTO;
 import com.assets.manager.broker.Broker;
 import com.assets.manager.asset.AssetService;
 import com.assets.manager.broker.BrokerService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,10 +26,19 @@ class AssetTest {
     @Autowired
     private BrokerService brokerService;
 
+    private Broker insertFakeBroker(String brokerName){
+        Broker broker = new Broker();
+        broker.setName(brokerName);
+        return brokerService.insert(broker);
+    }
+
     @Test
     void insertTest(){
 
+        Broker insertedBroker = insertFakeBroker("CLEAR");
+
         Asset asset = new Asset();
+        asset.setBroker(insertedBroker);
         asset.setName("assetNameTest");
         asset.setType("assetTypeTest");
 
@@ -54,13 +64,19 @@ class AssetTest {
     @Test
     void testList(){
 
+        Broker insertedBroker = insertFakeBroker("CLEAR");
+
         Asset asset1 = new Asset();
-        asset1.setName("assetNameTest");
-        asset1.setType("assetTypeTest");
+        asset1.setBroker(insertedBroker);
+        asset1.setTicker("assetTickerTest1");
+        asset1.setName("assetNameTest1");
+        asset1.setType("assetTypeTest1");
 
         Asset asset2 = new Asset();
-        asset2.setName("assetNameTest");
-        asset2.setType("assetTypeTest");
+        asset2.setBroker(insertedBroker);
+        asset2.setTicker("assetTickerTest2");
+        asset2.setName("assetNameTest2");
+        asset2.setType("assetTypeTest2");
 
         AssetDTO assetReturned1 = assetService.insert(asset1);
         AssetDTO assetReturned2 = assetService.insert(asset2);
@@ -70,31 +86,29 @@ class AssetTest {
         assetService.delete(assetReturned1.getId());
         assetService.delete(assetReturned2.getId());
 
-        assertEquals(0, assetService.getAssets(PageRequest.of(0,10)).size());
+        assertFalse(assetService.getAssetsById(assetReturned1.getId()).isPresent());
+        assertFalse(assetService.getAssetsById(assetReturned2.getId()).isPresent());
     }
 
     @Test
     void insertAssetBroker(){
 
-        Broker broker = new Broker();
-        broker.setName("CLEAR");
-
-        Broker savedBroker = brokerService.insert(broker);
+        Broker insertedBroker = insertFakeBroker("CLEAR");
 
         Asset asset1 = Asset.builder()
                 .assetClass("Fixed")
                 .type("Tesouro Direto")
-                .broker(savedBroker)
+                .broker(insertedBroker)
                 .name("NTNB 2031")
-                .averagePrice(10000.59F)
+                .totalCost(10000.59F)
                 .build();
 
         AssetDTO savedAsset = assetService.insert(asset1);
-        assertNotNull(savedAsset);
-        assertEquals(savedBroker.getId(), savedAsset.getBroker().getId());
-        assertEquals("Tesouro Direto" ,savedAsset.getType());
+        Assertions.assertNotNull(savedAsset);
+        Assertions.assertEquals(insertedBroker.getId(), savedAsset.getBroker().getId());
+        Assertions.assertEquals("Tesouro Direto" ,savedAsset.getType());
 
-        Broker updatedBroker = brokerService.getBrokerById(savedBroker.getId()).get();
-        assertTrue(updatedBroker.getAssets().size()>0);
+        Broker updatedBroker = brokerService.getBrokerById(insertedBroker.getId()).get();
+        Assertions.assertTrue(updatedBroker.getAssets().size()>0);
     }
 }

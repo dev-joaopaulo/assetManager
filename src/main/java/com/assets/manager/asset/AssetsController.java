@@ -30,10 +30,10 @@ public class AssetsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<AssetDTO>> getAssets(@PathVariable Long id){
+    public ResponseEntity<AssetDTO> getAssets(@PathVariable Long id){
         Optional<AssetDTO> asset = assetService.getAssetsById(id);
         return asset.isPresent() ?
-                ResponseEntity.ok(asset) :
+                ResponseEntity.ok(asset.get()) :
                 ResponseEntity.notFound().build();
     }
 
