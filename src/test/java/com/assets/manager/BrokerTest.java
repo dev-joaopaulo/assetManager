@@ -1,6 +1,7 @@
 package com.assets.manager;
 
 import com.assets.manager.broker.Broker;
+import com.assets.manager.broker.BrokerDTO;
 import com.assets.manager.broker.BrokerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class BrokerTest {
         Broker broker = new Broker();
         broker.setName("CLEAR");
 
-        Broker brokerReturned = brokerService.insert(broker);
+        Broker brokerReturned = brokerService.insert(new BrokerDTO(broker));
         assertNotNull(brokerReturned);
 
         Long id = brokerReturned.getId();

@@ -7,6 +7,7 @@ import com.assets.manager.asset_record.AssetRecord;
 import com.assets.manager.asset_record.AssetRecordDTO;
 import com.assets.manager.asset_record.AssetRecordService;
 import com.assets.manager.broker.Broker;
+import com.assets.manager.broker.BrokerDTO;
 import com.assets.manager.broker.BrokerService;
 import com.assets.manager.types.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class MockDataService {
     public Broker insertFakeBroker(String brokerName){
         Broker broker = new Broker();
         broker.setName(brokerName);
-        return brokerService.insert(broker);
+        return brokerService.insert(new BrokerDTO(broker));
     }
 
     public AssetRecordDTO insertFakeAssetRecord(AssetDTO assetDto, int quantity,

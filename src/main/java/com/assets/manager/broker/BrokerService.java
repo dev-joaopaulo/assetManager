@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,15 +23,18 @@ public class BrokerService {
         return repository.findById(id);
     }
 
-    public Broker insert(Broker broker){
-        Assert.isNull(broker.getId(), "It was not possible to insert record");
-        return repository.save(broker);
+    public Broker insert(BrokerDTO brokerDTO){
+        Assert.isNull(brokerDTO.getId(), "It was not possible to insert record");
+        return repository.save(brokerDTO.toEntity());
     }
 
     public void removeAssetFromBroker(Long brokerId, Asset asset){
         Optional<Broker> optionalBroker =  getBrokerById(brokerId);
         if(optionalBroker.isPresent()){
-            optionalBroker.get().getAssets().remove(asset);
+            optionalBroker
+                    .get()
+                    .getAssets()
+                    .removeIf(a -> Objects.equals(a, asset));
             repository.save(optionalBroker.get());
         }
     }
