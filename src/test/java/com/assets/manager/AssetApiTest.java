@@ -13,7 +13,6 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.*;
 
@@ -24,44 +23,12 @@ public class AssetApiTest extends BaseAPITest{
     @Autowired
     private BrokerService brokerService;
 
-    private ResponseEntity<AssetDTO> getAsset(String url){
-        return get(url, AssetDTO.class);
-    }
-
-    private Broker insertFakeBroker(String brokerName){
-        Broker broker = new Broker();
-        broker.setName(brokerName);
-        return brokerService.insert(broker);
-    }
-
-    private ResponseEntity<List<Asset>> getAssets(){
-        String url = "/api/v1/assets/";
-        HttpHeaders headers = getHeaders();
-        return rest.exchange(
-                        url,
-                        HttpMethod.GET,
-                        new HttpEntity<>(headers),
-                        new ParameterizedTypeReference<List<Asset>>() {
-                        });
-    }
-
-    private ResponseEntity createAsset(String assetName, String assetTicker, String assetType){
-
-        Broker broker = insertFakeBroker("CLEAR");
-
-        Asset asset = new Asset();
-        asset.setName(assetName);
-        asset.setTicker(assetTicker);
-        asset.setType(assetType);
-        asset.setBroker(broker);
-
-        String url =  "/api/v1/assets";
-        return post(url, AssetDTO.create(asset), ResponseEntity.class);
-    }
+    @Autowired
+    private MockDataService mockDataService;
 
     @Test
     public void testInsertAsset(){
-        ResponseEntity response = createAsset("assetNameTest",
+        ResponseEntity response = postFakeAsset("assetNameTest",
                 "assetTickerTest", "assetTypeTest");
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -79,7 +46,7 @@ public class AssetApiTest extends BaseAPITest{
 
     @Test
     public void testUpdateAsset(){
-        ResponseEntity response = createAsset("assetNameTest",
+        ResponseEntity response = postFakeAsset("assetNameTest",
                 "assetTickerTest", "assetTypeTest");
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -100,8 +67,18 @@ public class AssetApiTest extends BaseAPITest{
         assertEquals(HttpStatus.NOT_FOUND, getAsset(location).getStatusCode());
     }
 
+    @Test
     public void testDeleteAsset(){
+        ResponseEntity response = postFakeAsset("assetNameTest",
+                "assetTickerTest", "assetTypeTest");
 
+        String location = response.getHeaders().get("location").get(0);
+        AssetDTO createdAsset = getAsset(location).getBody();
+
+        assertNotNull(createdAsset);
+
+        delete(location, ResponseEntity.class);
+        assertEquals(HttpStatus.NOT_FOUND, getAsset(location).getStatusCode());
     }
 
     @Test
@@ -109,9 +86,38 @@ public class AssetApiTest extends BaseAPITest{
         ResponseEntity response = getAssets();
         assertEquals(HttpStatus.NOT_FOUND , response.getStatusCode());
 
-        createAsset("assetNameTest",
+        postFakeAsset("assetNameTest",
                 "assetTickerTest", "assetTypeTest");
         response = getAssets();
         assertEquals(HttpStatus.OK , response.getStatusCode());
+    }
+
+    private ResponseEntity<AssetDTO> getAsset(String url){
+        return get(url, AssetDTO.class);
+    }
+
+    private ResponseEntity<List<Asset>> getAssets(){
+        String url = "/api/v1/assets/";
+        HttpHeaders headers = getHeaders();
+        return rest.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Asset>>() {
+                });
+    }
+
+    private ResponseEntity postFakeAsset(String assetName, String assetTicker, String assetType){
+
+        Broker broker = mockDataService.insertFakeBroker("CLEAR");
+
+        Asset asset = new Asset();
+        asset.setName(assetName);
+        asset.setTicker(assetTicker);
+        asset.setType(assetType);
+        asset.setBroker(broker);
+
+        String url =  "/api/v1/assets";
+        return post(url, AssetDTO.create(asset), ResponseEntity.class);
     }
 }

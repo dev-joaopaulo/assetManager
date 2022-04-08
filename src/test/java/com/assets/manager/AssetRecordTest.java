@@ -28,6 +28,9 @@ import static junit.framework.TestCase.*;
 public class AssetRecordTest {
 
     @Autowired
+    MockDataService mockDataService;
+
+    @Autowired
     private AssetRecordService assetRecordService;
 
     @Autowired
@@ -36,41 +39,13 @@ public class AssetRecordTest {
     @Autowired
     private BrokerService brokerService;
 
-    private AssetDTO insertFakeAsset(String name, String type){
-        Asset asset = new Asset();
-        asset.setName(name);
-        asset.setType(type);
-        asset.setBroker(insertFakeBroker("Clear"));
-
-        return assetService.insert(asset);
-    }
-
-    private Broker insertFakeBroker(String brokerName){
-        Broker broker = new Broker();
-        broker.setName(brokerName);
-        return brokerService.insert(broker);
-    }
-
-    private AssetRecordDTO insertFakeAssetRecord(AssetDTO assetDto, int quantity,
-                                                 float averageCost, OperationType operationType){
-        Asset assetReturned = AssetDTO.reverseMap(assetDto);
-        AssetRecord assetRecord = AssetRecord.builder()
-                .asset(assetReturned)
-                .operationType(operationType.toString())
-                .quantity(quantity)
-                .averageCostPerShare(averageCost)
-                .build();
-
-        return assetRecordService.insert(AssetRecordDTO.create(assetRecord));
-    }
-
     @Test
     public void insertTest(){
 
-        AssetDTO assetDto = insertFakeAsset("testAsset", "testType");
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
         Assertions.assertNotNull(assetDto);
 
-        AssetRecordDTO assetRecordDTO = insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
+        AssetRecordDTO assetRecordDTO = mockDataService.insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
 
         Assertions.assertNotNull(assetRecordDTO.getId());
         Assertions.assertEquals(100, assetRecordDTO.getQuantity() );
@@ -84,34 +59,27 @@ public class AssetRecordTest {
 
     @Test
     public void insertMultipleRecords(){
-        AssetDTO assetDto = insertFakeAsset("testAsset", "testType");
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
         Long assetId = assetDto.getId();
         Assertions.assertNotNull(assetId);
 
-        insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
-        Optional<AssetDTO> updatedAsset = assetService.getAssetsById(assetId);
-        Assertions.assertEquals(150F, updatedAsset.get().getAveragePrice());
+        mockDataService.insertFakeAssetRecord(assetDto, 100, 250F, OperationType.BUY);
+        assertEquals(250F, assetService.getAssetsById(assetId).get().getAveragePrice());
 
-        insertFakeAssetRecord(assetDto, 100, 250F, OperationType.BUY);
-        updatedAsset = assetService.getAssetsById(assetId);
-        assertEquals(200F, updatedAsset.get().getAveragePrice());
+        mockDataService.insertFakeAssetRecord(assetDto, 25, 300F, OperationType.SELL);
+        assertEquals(250F, assetService.getAssetsById(assetId).get().getAveragePrice());
 
-        insertFakeAssetRecord(assetDto, 25, 300F, OperationType.SELL);
-        updatedAsset = assetService.getAssetsById(assetId);
-        assertEquals(200F, updatedAsset.get().getAveragePrice());
-
-        insertFakeAssetRecord(assetDto, 50, 100F, OperationType.SELL);
-        updatedAsset = assetService.getAssetsById(assetId);
-        assertEquals(200F, updatedAsset.get().getAveragePrice());
+        mockDataService.insertFakeAssetRecord(assetDto, 50, 100F, OperationType.SELL);
+        assertEquals(250F, assetService.getAssetsById(assetId).get().getAveragePrice());
     }
 
     @Test
     public void updateTest(){
-        AssetDTO assetDto = insertFakeAsset("testAsset", "testType");
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
         Long assetId = assetDto.getId();
         Assertions.assertNotNull(assetId);
 
-        AssetRecordDTO assetRecordDTO = insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
+        AssetRecordDTO assetRecordDTO = mockDataService.insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
         assertNotNull(assetRecordDTO.getId());
 
         assetRecordDTO.setQuantity(200);

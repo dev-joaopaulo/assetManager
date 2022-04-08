@@ -24,18 +24,12 @@ class AssetTest {
     private AssetService assetService;
 
     @Autowired
-    private BrokerService brokerService;
-
-    private Broker insertFakeBroker(String brokerName){
-        Broker broker = new Broker();
-        broker.setName(brokerName);
-        return brokerService.insert(broker);
-    }
+    private MockDataService mockDataService;
 
     @Test
     void insertTest(){
 
-        Broker insertedBroker = insertFakeBroker("CLEAR");
+        Broker insertedBroker = mockDataService.insertFakeBroker("CLEAR");
 
         Asset asset = new Asset();
         asset.setBroker(insertedBroker);
@@ -64,7 +58,7 @@ class AssetTest {
     @Test
     void testList(){
 
-        Broker insertedBroker = insertFakeBroker("CLEAR");
+        Broker insertedBroker = mockDataService.insertFakeBroker("CLEAR");
 
         Asset asset1 = new Asset();
         asset1.setBroker(insertedBroker);
@@ -93,7 +87,7 @@ class AssetTest {
     @Test
     void insertAssetBroker(){
 
-        Broker insertedBroker = insertFakeBroker("CLEAR");
+        Broker insertedBroker = mockDataService.insertFakeBroker("CLEAR");
 
         Asset asset1 = Asset.builder()
                 .assetClass("Fixed")
@@ -107,8 +101,5 @@ class AssetTest {
         Assertions.assertNotNull(savedAsset);
         Assertions.assertEquals(insertedBroker.getId(), savedAsset.getBroker().getId());
         Assertions.assertEquals("Tesouro Direto" ,savedAsset.getType());
-
-        Broker updatedBroker = brokerService.getBrokerById(insertedBroker.getId()).get();
-        Assertions.assertTrue(updatedBroker.getAssets().size()>0);
     }
 }
