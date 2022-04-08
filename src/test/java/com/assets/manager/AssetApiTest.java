@@ -2,6 +2,7 @@ package com.assets.manager;
 
 import com.assets.manager.asset.Asset;
 import com.assets.manager.asset.AssetDTO;
+import com.assets.manager.asset.AssetService;
 import com.assets.manager.broker.Broker;
 import com.assets.manager.broker.BrokerService;
 import org.junit.Test;
@@ -24,10 +25,13 @@ public class AssetApiTest extends BaseAPITest{
     private BrokerService brokerService;
 
     @Autowired
+    private AssetService assetService;
+
+    @Autowired
     private MockDataService mockDataService;
 
     @Test
-    public void testInsertAsset(){
+    public void testCreateAsset(){
         ResponseEntity response = postFakeAsset("assetNameTest",
                 "assetTickerTest", "assetTypeTest");
 
@@ -82,14 +86,15 @@ public class AssetApiTest extends BaseAPITest{
     }
 
     @Test
-    public void testGetAssetsOk(){
-        ResponseEntity response = getAssets();
-        assertEquals(HttpStatus.NOT_FOUND , response.getStatusCode());
+    public void testReadAssets(){
 
-        postFakeAsset("assetNameTest",
-                "assetTickerTest", "assetTypeTest");
-        response = getAssets();
+        Broker broker = mockDataService.insertFakeBroker("CLEAR");
+        AssetDTO assetDTO = mockDataService.insertFakeAsset("fakeReadAssetName","fakeReadAssetType", broker);
+
+        ResponseEntity response = getAssets();
         assertEquals(HttpStatus.OK , response.getStatusCode());
+
+        assetService.delete(assetDTO.getId());
     }
 
     private ResponseEntity<AssetDTO> getAsset(String url){

@@ -42,7 +42,9 @@ public class AssetRecordTest {
     @Test
     public void insertTest(){
 
-        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
+        Broker broker = mockDataService.insertFakeBroker("Clear");
+
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType", broker);
         Assertions.assertNotNull(assetDto);
 
         AssetRecordDTO assetRecordDTO = mockDataService.insertFakeAssetRecord(assetDto, 100, 150F, OperationType.BUY);
@@ -55,11 +57,14 @@ public class AssetRecordTest {
         Optional<AssetDTO> updatedAsset = assetService.getAssetsById(assetDto.getId());
 
         Assertions.assertEquals(1, updatedAsset.get().getAssetRecords().size());
+
     }
 
     @Test
     public void insertMultipleRecords(){
-        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
+        Broker broker = mockDataService.insertFakeBroker("Clear");
+
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType", broker);
         Long assetId = assetDto.getId();
         Assertions.assertNotNull(assetId);
 
@@ -71,11 +76,16 @@ public class AssetRecordTest {
 
         mockDataService.insertFakeAssetRecord(assetDto, 50, 100F, OperationType.SELL);
         assertEquals(250F, assetService.getAssetsById(assetId).get().getAveragePrice());
+
+        assetService.delete(assetDto.getId());
+
     }
 
     @Test
     public void updateTest(){
-        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType");
+        Broker broker = mockDataService.insertFakeBroker("Clear");
+
+        AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType", broker);
         Long assetId = assetDto.getId();
         Assertions.assertNotNull(assetId);
 
@@ -95,6 +105,7 @@ public class AssetRecordTest {
         updatedAsset = assetService.getAssetsById(assetId);
         assertEquals(250F, updatedAsset.get().getAveragePrice());
 
+        assetService.delete(assetDto.getId());
 
     }
 

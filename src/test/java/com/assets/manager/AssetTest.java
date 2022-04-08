@@ -33,8 +33,8 @@ class AssetTest {
 
         Asset asset = new Asset();
         asset.setBroker(insertedBroker);
-        asset.setName("assetNameTest");
-        asset.setType("assetTypeTest");
+        asset.setName("assetNameTest_");
+        asset.setType("assetTypeTest_");
 
         AssetDTO assetReturned = assetService.insert(asset);
 
@@ -46,8 +46,8 @@ class AssetTest {
         Optional<AssetDTO> optional = assetService.getAssetsById(id);
         assertTrue(optional.isPresent());
 
-        assertEquals("assetNameTest", optional.get().getName());
-        assertEquals("assetTypeTest", optional.get().getType());
+        assertEquals("assetNameTest_", optional.get().getName());
+        assertEquals("assetTypeTest_", optional.get().getType());
 
         assetService.delete(id);
 

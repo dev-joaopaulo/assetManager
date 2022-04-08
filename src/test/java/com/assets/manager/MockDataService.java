@@ -24,10 +24,11 @@ public class MockDataService {
     @Autowired
     private BrokerService brokerService;
 
-    public AssetDTO insertFakeAsset(String name, String type){
+    public AssetDTO insertFakeAsset(String name, String type, Broker broker) {
         Asset asset = new Asset();
         asset.setName(name);
         asset.setType(type);
+        asset.setBroker(broker);
         asset.setBroker(insertFakeBroker("Clear"));
 
         return assetService.insert(asset);
