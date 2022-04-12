@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-@RestController("/api/v1/assets-records")
+@RestController("/api/v1/asset-record")
 public class AssetRecordController {
 
     @Autowired

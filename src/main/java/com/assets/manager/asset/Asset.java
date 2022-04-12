@@ -27,14 +27,14 @@ public class Asset {
     private float totalCost;
     private float currentPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "broker_id")
     @JoinTable(name = "asset_broker",
             joinColumns = @JoinColumn(name = "fk_asset"),
             inverseJoinColumns = @JoinColumn(name = "fk_broker"))
     private Broker broker;
 
-    @OneToMany(mappedBy = "asset",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "asset", fetch = FetchType.EAGER)
     private Set<AssetRecord> assetRecords = new HashSet<>();
 
     @Override
@@ -48,5 +48,9 @@ public class Asset {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public float getAveragePrice() {
+        return totalCost / quantity;
     }
 }

@@ -1,7 +1,6 @@
 package com.assets.manager.broker;
 
 import com.assets.manager.asset.Asset;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,8 +19,7 @@ public class Broker {
     private String name;
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Asset> assets = new HashSet<>();
 
     @Override

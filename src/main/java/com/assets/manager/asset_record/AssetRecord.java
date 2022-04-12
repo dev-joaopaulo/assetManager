@@ -16,7 +16,7 @@ public class AssetRecord {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "record_id")
     @JoinTable(name = "record_asset",
             joinColumns = @JoinColumn(name = "fk_record"),

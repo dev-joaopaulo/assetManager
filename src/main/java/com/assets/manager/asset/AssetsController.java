@@ -5,7 +5,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -17,8 +16,11 @@ import static com.assets.manager.util.UriUtil.getUri;
 @RequestMapping("/api/v1/assets")
 public class AssetsController {
 
-    @Autowired
     AssetService assetService;
+
+    public AssetsController(AssetService assetService){
+        this.assetService = assetService;
+    }
 
     @GetMapping()
     public ResponseEntity<List<AssetDTO>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -31,10 +33,7 @@ public class AssetsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AssetDTO> getAssets(@PathVariable Long id){
-        Optional<AssetDTO> asset = assetService.getAssetsById(id);
-        return asset.isPresent() ?
-                ResponseEntity.ok(asset.get()) :
-                ResponseEntity.notFound().build();
+        return ResponseEntity.ok(new AssetDTO(assetService.getAssetById(id)));
     }
 
     @GetMapping("/get-assets-by-type/{type}")
@@ -48,8 +47,7 @@ public class AssetsController {
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody AssetDTO assetDTO){
-        Asset asset = AssetDTO.reverseMap(assetDTO);
-        AssetDTO a = assetService.insert(asset);
+        AssetDTO a = assetService.insert(assetDTO);
         URI location = getUri(a.getId());
         return ResponseEntity.created(location).build();
     }
