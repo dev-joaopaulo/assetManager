@@ -42,8 +42,6 @@ public class AssetRecordService {
         Asset asset = getAsset(assetRecordDTO.getAssetId());
         AssetRecord insertedRecord = assetRecordRepository.save(toEntity(assetRecordDTO, asset));
 
-        updateConcernedAsset(insertedRecord);
-
         return new AssetRecordDTO(insertedRecord);
     }
 
@@ -65,8 +63,6 @@ public class AssetRecordService {
         dbAssetRecord.setOperationDate(assetRecordDTO.getOperationDate());
 
         dbAssetRecord = assetRecordRepository.save(dbAssetRecord);
-
-        updateConcernedAsset(dbAssetRecord);
 
         return new AssetRecordDTO(dbAssetRecord);
     }
@@ -93,23 +89,6 @@ public class AssetRecordService {
 
     private Asset getAsset(Long assetId){
         return assetService.getAssetById(assetId);
-    }
-
-
-    private void updateConcernedAsset(AssetRecord assetRecord) {
-
-        Asset asset = assetRecord.getAsset();
-
-        for(AssetRecord recordItem : asset.getAssetRecords()){
-            if(Objects.equals(recordItem.getId(), assetRecord.getId())){
-                asset.getAssetRecords().remove(recordItem);
-                asset.getAssetRecords().add(assetRecord);
-                assetService.updateAsset(asset.getId(), asset);
-                return;
-            }
-        }
-        asset.getAssetRecords().add(assetRecord);
-        assetService.updateAsset(asset.getId(), asset);
     }
 
 }

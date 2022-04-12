@@ -52,8 +52,6 @@ public class AssetService {
         Asset asset = toEntity(assetDTO);
         Asset savedAsset = assetRepository.save(asset);
 
-        brokerService.addAssetToBroker(assetDTO.getBrokerId(), savedAsset);
-
         return new AssetDTO(savedAsset);
     }
 

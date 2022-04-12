@@ -19,7 +19,7 @@ public class Broker {
     private String name;
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "broker", fetch = FetchType.EAGER)
     private Set<Asset> assets = new HashSet<>();
 
     @Override

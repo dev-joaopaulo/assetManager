@@ -3,16 +3,19 @@ package com.assets.manager.asset_record;
 import com.assets.manager.util.UriUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
-@RestController("/api/v1/asset-record")
+@RestController
+@RequestMapping("/api/v1/asset-record")
 public class AssetRecordController {
 
     @Autowired
     private AssetRecordService assetRecordService;
+
 
     @GetMapping()
     public ResponseEntity getRecordAssets(){
@@ -22,12 +25,15 @@ public class AssetRecordController {
                 ResponseEntity.notFound().build();
     }
 
+
     @PostMapping()
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity insert(@RequestBody AssetRecordDTO assetRecordDTO){
-        AssetRecordDTO a = assetRecordService.insert(assetRecordDTO);
-        URI location = UriUtil.getUri(a.getId());
+        AssetRecordDTO insertedAssetRecord = assetRecordService.insert(assetRecordDTO);
+        URI location = UriUtil.getUri(insertedAssetRecord.getId());
         return ResponseEntity.created(location).build();
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody  AssetRecordDTO assetRecordDTO){
@@ -36,6 +42,7 @@ public class AssetRecordController {
                 ResponseEntity.ok(updatedAssetRecord) :
                 ResponseEntity.notFound().build();
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id){
