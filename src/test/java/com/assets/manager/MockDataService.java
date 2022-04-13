@@ -25,33 +25,31 @@ public class MockDataService {
     @Autowired
     private BrokerService brokerService;
 
-    public AssetDTO insertFakeAsset(String name, String type, Broker broker) {
-        Asset asset = new Asset();
-        asset.setName(name);
-        asset.setType(type);
-        asset.setBroker(broker);
-        asset.setBroker(insertFakeBroker("Clear"));
+    public AssetDTO insertFakeAsset(String name, String type, Long brokerId) {
+        AssetDTO assetDTO = new AssetDTO();
+        assetDTO.setName(name);
+        assetDTO.setType(type);
+        assetDTO.setBrokerId(brokerId);
 
-        return assetService.insert(asset);
+        return assetService.insert(assetDTO);
     }
 
-    public Broker insertFakeBroker(String brokerName){
+    public BrokerDTO insertFakeBroker(String brokerName){
         Broker broker = new Broker();
         broker.setName(brokerName);
         return brokerService.insert(new BrokerDTO(broker));
     }
 
-    public AssetRecordDTO insertFakeAssetRecord(AssetDTO assetDto, int quantity,
+    public AssetRecordDTO insertFakeAssetRecord(Long assetId, int quantity,
                                                  float averageCost, OperationType operationType){
-        Asset assetReturned = AssetDTO.reverseMap(assetDto);
-        AssetRecord assetRecord = AssetRecord.builder()
-                .asset(assetReturned)
+        AssetRecordDTO assetRecordDTO = AssetRecordDTO.builder()
+                .assetId(assetId)
                 .operationType(operationType.toString())
                 .quantity(quantity)
                 .averageCostPerShare(averageCost)
                 .build();
 
-        return assetRecordService.insert(AssetRecordDTO.create(assetRecord));
+        return assetRecordService.insert(assetRecordDTO);
     }
 
 }

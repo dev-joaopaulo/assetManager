@@ -1,5 +1,6 @@
-package com.assets.manager;
+package com.assets.manager.features_test;
 
+import com.assets.manager.ManagerApplication;
 import com.assets.manager.config.security.jwt.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

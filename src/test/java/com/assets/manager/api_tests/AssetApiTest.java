@@ -4,6 +4,7 @@ import com.assets.manager.asset.Asset;
 import com.assets.manager.asset.AssetDTO;
 import com.assets.manager.asset.AssetService;
 import com.assets.manager.broker.Broker;
+import com.assets.manager.broker.BrokerDTO;
 import com.assets.manager.broker.BrokerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -88,8 +89,8 @@ public class AssetApiTest extends BaseAPITest{
     @Test
     public void testReadAssets(){
 
-        Broker broker = mockDataService.insertFakeBroker("CLEAR");
-        AssetDTO assetDTO = mockDataService.insertFakeAsset("fakeReadAssetName","fakeReadAssetType", broker);
+        BrokerDTO brokerDTO = mockDataService.insertFakeBroker("CLEAR");
+        AssetDTO assetDTO = mockDataService.insertFakeAsset("fakeReadAssetName","fakeReadAssetType", brokerDTO.getId());
 
         ResponseEntity response = getAssets();
         assertEquals(HttpStatus.OK , response.getStatusCode());
@@ -114,15 +115,15 @@ public class AssetApiTest extends BaseAPITest{
 
     private ResponseEntity postFakeAsset(String assetName, String assetTicker, String assetType){
 
-        Broker broker = mockDataService.insertFakeBroker("CLEAR");
+        BrokerDTO brokerDTO = mockDataService.insertFakeBroker("CLEAR");
 
-        Asset asset = new Asset();
-        asset.setName(assetName);
-        asset.setTicker(assetTicker);
-        asset.setType(assetType);
-        asset.setBroker(broker);
+        AssetDTO assetDTO = new AssetDTO();
+        assetDTO.setName(assetName);
+        assetDTO.setTicker(assetTicker);
+        assetDTO.setType(assetType);
+        assetDTO.setBrokerId(brokerDTO.getId());
 
         String url =  "/api/v1/assets";
-        return post(url, AssetDTO.create(asset), ResponseEntity.class);
+        return post(url, assetDTO, ResponseEntity.class);
     }
 }

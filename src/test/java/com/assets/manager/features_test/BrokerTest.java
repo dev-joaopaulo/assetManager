@@ -1,4 +1,4 @@
-package com.assets.manager;
+package com.assets.manager.features_test;
 
 import com.assets.manager.broker.Broker;
 import com.assets.manager.broker.BrokerDTO;
@@ -18,14 +18,17 @@ public class BrokerTest {
     @Test
     public void insertTest(){
 
-        Broker broker = new Broker();
-        broker.setName("CLEAR");
+        BrokerDTO brokerDTO = new BrokerDTO();
+        brokerDTO.setName("CLEAR");
 
-        Broker brokerReturned = brokerService.insert(new BrokerDTO(broker));
+        BrokerDTO brokerReturned = brokerService.insert(brokerDTO);
         assertNotNull(brokerReturned);
 
         Long id = brokerReturned.getId();
         assertNotNull(id);
+
+        Broker insertedBroker = brokerService.getBrokerById(brokerReturned.getId());
+        assertEquals("CLEAR", insertedBroker.getName());
     }
 
 }
