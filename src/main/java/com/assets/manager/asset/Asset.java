@@ -23,9 +23,6 @@ public class Asset {
     private String type;
     private String name;
     private String ticker;
-    private int quantity;
-    private float totalCost;
-    private float currentPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "broker_id")
@@ -50,7 +47,5 @@ public class Asset {
         return Objects.hash(id);
     }
 
-    public float getAveragePrice() {
-        return totalCost / quantity;
-    }
+
 }

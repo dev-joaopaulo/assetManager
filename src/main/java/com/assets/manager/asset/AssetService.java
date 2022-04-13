@@ -61,7 +61,6 @@ public class AssetService {
 
         Asset dbAsset = getAssetById(id);
         dbAsset.setName(asset.getName());
-        dbAsset = updateQuantityAndCost(dbAsset);
         Set<AssetRecord> updatedAssetRecords = updateAssetRecords(new AssetDTO(dbAsset),asset);
         dbAsset.setAssetRecords(updatedAssetRecords);
         return new AssetDTO(assetRepository.save(dbAsset));
@@ -74,7 +73,6 @@ public class AssetService {
         dbAsset.setBroker(asset.getBroker());
         dbAsset.setTicker(asset.getTicker());
         dbAsset.setAssetRecords(asset.getAssetRecords());
-        dbAsset = updateQuantityAndCost(dbAsset);
         assetRepository.save(dbAsset);
     }
 
@@ -93,8 +91,6 @@ public class AssetService {
                 .type(assetDTO.getType())
                 .name(assetDTO.getName())
                 .ticker(assetDTO.getTicker())
-                .quantity(assetDTO.getQuantity())
-                .totalCost(assetDTO.getTotalCost())
                 .broker(brokerService.getBrokerById(assetDTO.getBrokerId()))
                 .assetRecords(new HashSet<>())
                 .build();
@@ -104,6 +100,7 @@ public class AssetService {
     public Asset toEntity(AssetDTO assetDTO, Set<AssetRecord> assetRecords){
         Asset asset = toEntity(assetDTO);
         asset.setAssetRecords(assetRecords);
+
         return asset;
     }
 
@@ -121,23 +118,7 @@ public class AssetService {
     }
 
 
-    public Asset updateQuantityAndCost(Asset asset){
-        int qty = 0;
-        float totalCost = 0;
-        Set<AssetRecord> assetRecordList = asset.getAssetRecords();
-        for (AssetRecord assetRecord: assetRecordList) {
-            if(Objects.equals(assetRecord.getOperationType(), OperationType.BUY.toString())){
-                qty += assetRecord.getQuantity();
-                totalCost += assetRecord.getQuantity() * assetRecord.getAverageCostPerShare();
-            } else if(Objects.equals(assetRecord.getOperationType(), OperationType.SELL.toString())){
-                qty -= assetRecord.getQuantity();
-                totalCost -= assetRecord.getQuantity() * asset.getAveragePrice();
-            }
-        }
-        asset.setQuantity(qty);
-        asset.setTotalCost(totalCost);
-        return asset;
-    }
+
 
     private Set<AssetRecord> getAssetRecordsFromIds(List<Long> ids){
         Set<AssetRecord> assetRecords = new HashSet<>();

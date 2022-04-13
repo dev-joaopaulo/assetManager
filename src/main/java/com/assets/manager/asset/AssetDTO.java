@@ -9,10 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,7 +24,7 @@ public class AssetDTO {
     private String name;
     private String ticker;
     private int quantity;
-    private float totalCost;
+    private float averagePrice;
     private Long brokerId;
     private List<Long> assetRecordsIds;
 
@@ -37,15 +35,10 @@ public class AssetDTO {
         this.type = asset.getType();
         this.name = asset.getName();
         this.ticker = asset.getTicker();
-        this.quantity = asset.getQuantity();
-        this.totalCost = asset.getTotalCost();
         this.brokerId = asset.getBroker().getId();
         this.assetRecordsIds = getAssetRecordsIds(asset.getAssetRecords());
-    }
-
-
-    public float getAveragePrice() {
-        return totalCost / quantity;
+        this.averagePrice = getAveragePrice(asset.getAssetRecords());
+        this.quantity = getQuantity(asset.getAssetRecords());
     }
 
 
@@ -57,6 +50,30 @@ public class AssetDTO {
                 .stream()
                 .map(AssetRecord::getId)
                 .collect(Collectors.toList());
+    }
+
+    private float getAveragePrice(Set<AssetRecord> assetRecordList){
+        int qty = 0;
+        float cost = 0;
+        for (AssetRecord assetRecord: assetRecordList) {
+            if(Objects.equals(assetRecord.getOperationType().toLowerCase(), OperationType.BUY.toString())){
+                qty += assetRecord.getQuantity();
+                cost += assetRecord.getQuantity() * assetRecord.getAverageCostPerShare();
+            }
+        }
+        return qty > 0 ? cost/qty : 0;
+    }
+
+    private int getQuantity(Set<AssetRecord> assetRecordList) {
+        int qty = 0;
+        for (AssetRecord assetRecord : assetRecordList) {
+            if (Objects.equals(assetRecord.getOperationType().toLowerCase(), OperationType.BUY.toString())) {
+                qty += assetRecord.getQuantity();
+            } else if (Objects.equals(assetRecord.getOperationType().toLowerCase(), OperationType.SELL.toString())) {
+                qty -= assetRecord.getQuantity();
+            }
+        }
+        return qty;
     }
 
 }
