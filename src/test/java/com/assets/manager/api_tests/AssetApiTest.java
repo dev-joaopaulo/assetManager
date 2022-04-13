@@ -1,9 +1,10 @@
-package com.assets.manager;
+package com.assets.manager.api_tests;
 
+import com.assets.manager.ManagerApplication;
+import com.assets.manager.MockDataService;
 import com.assets.manager.asset.Asset;
 import com.assets.manager.asset.AssetDTO;
 import com.assets.manager.asset.AssetService;
-import com.assets.manager.broker.Broker;
 import com.assets.manager.broker.BrokerDTO;
 import com.assets.manager.broker.BrokerService;
 import org.junit.Test;
@@ -46,7 +47,6 @@ public class AssetApiTest extends BaseAPITest{
         assertEquals("assetTypeTest", createdAsset.getType());
 
         delete(location, ResponseEntity.class);
-        assertEquals(HttpStatus.NOT_FOUND, getAsset(location).getStatusCode());
     }
 
     @Test
@@ -69,7 +69,6 @@ public class AssetApiTest extends BaseAPITest{
         assertEquals("updatedAssetName",updatedAsset.getName());
 
         delete(location, ResponseEntity.class);
-        assertEquals(HttpStatus.NOT_FOUND, getAsset(location).getStatusCode());
     }
 
     @Test
@@ -83,7 +82,6 @@ public class AssetApiTest extends BaseAPITest{
         assertNotNull(createdAsset);
 
         delete(location, ResponseEntity.class);
-        assertEquals(HttpStatus.NOT_FOUND, getAsset(location).getStatusCode());
     }
 
     @Test

@@ -60,7 +60,7 @@ class AssetTest {
 
         assetService.delete(id);
 
-        assertNull( assetService.getAssetById(id));
+        assertNull( assetService.getAssetById(id).getId());
 
     }
 

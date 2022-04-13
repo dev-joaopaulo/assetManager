@@ -36,7 +36,7 @@ public class AssetService {
 
 
     public Asset getAssetById(Long id) {
-        return assetRepository.findById(id).orElse(null);
+        return assetRepository.findById(id).orElse(new Asset());
     }
 
 
@@ -78,10 +78,12 @@ public class AssetService {
 
 
     public void delete(Long id) {
-        Asset asset = assetRepository.getById(id);
-        Assert.notNull(asset.getBroker(), "Forbidden - Asset does not have a Broker");
-        asset.getBroker().getAssets().remove(asset);
-        assetRepository.deleteById(id);
+        Asset asset = assetRepository.findById(id).orElse(null);
+        if(asset != null){
+            Assert.notNull(asset.getBroker(), "Forbidden - Asset does not have a Broker");
+            asset.getBroker().getAssets().remove(asset);
+            assetRepository.deleteById(id);
+        }
     }
 
     public Asset toEntity(AssetDTO assetDTO){

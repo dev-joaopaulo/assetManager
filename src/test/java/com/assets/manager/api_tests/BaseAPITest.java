@@ -1,5 +1,6 @@
-package com.assets.manager;
+package com.assets.manager.api_tests;
 
+import com.assets.manager.ManagerApplication;
 import com.assets.manager.config.security.jwt.JwtUtil;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -31,13 +32,7 @@ public class AssetRecordTest {
     MockDataService mockDataService;
 
     @Autowired
-    private AssetRecordService assetRecordService;
-
-    @Autowired
     private AssetService assetService;
-
-    @Autowired
-    private BrokerService brokerService;
 
     @Test
     public void insertTest(){
@@ -55,11 +50,7 @@ public class AssetRecordTest {
 
     @Test
     public void insertMultipleRecords(){
-        BrokerDTO brokerDTO = brokerService.insert(
-                BrokerDTO.builder()
-                        .name("CLEAR")
-                        .build()
-        );
+        BrokerDTO brokerDTO = mockDataService.insertFakeBroker("Clear");
         AssetDTO assetDto = mockDataService.insertFakeAsset("testAsset", "testType", brokerDTO.getId());
         Long assetId = assetDto.getId();
         Assertions.assertNotNull(assetId);

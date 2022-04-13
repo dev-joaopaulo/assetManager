@@ -1,4 +1,4 @@
-package com.assets.manager;
+package com.assets.manager.api_tests;
 
 import com.assets.manager.broker.BrokerDTO;
 import org.junit.Test;
