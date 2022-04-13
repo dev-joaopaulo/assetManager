@@ -1,6 +1,5 @@
 package com.assets.manager.broker;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +12,18 @@ import static com.assets.manager.util.UriUtil.getUri;
 @RequestMapping("/api/v1/broker")
 public class BrokerController {
 
-    @Autowired
-    private BrokerService brokerService;
+    private final BrokerService brokerService;
+
+    public BrokerController(BrokerService brokerService) {
+        this.brokerService = brokerService;
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable Long id){
         return ResponseEntity.ok(new BrokerDTO(brokerService.getBrokerById(id)));
     }
+
 
     @PostMapping()
     @Secured({"ROLE_ADMIN"})

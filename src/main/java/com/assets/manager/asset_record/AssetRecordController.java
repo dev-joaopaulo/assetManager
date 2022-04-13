@@ -1,7 +1,6 @@
 package com.assets.manager.asset_record;
 
 import com.assets.manager.util.UriUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,11 @@ import java.util.List;
 @RequestMapping("/api/v1/asset-record")
 public class AssetRecordController {
 
-    @Autowired
-    private AssetRecordService assetRecordService;
+    private final AssetRecordService assetRecordService;
 
+    public AssetRecordController(AssetRecordService assetRecordService) {
+        this.assetRecordService = assetRecordService;
+    }
 
     @GetMapping()
     public ResponseEntity getRecordAssets(){

@@ -1,6 +1,5 @@
 package com.assets.manager.asset;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import static com.assets.manager.util.UriUtil.getUri;
 
@@ -16,11 +14,12 @@ import static com.assets.manager.util.UriUtil.getUri;
 @RequestMapping("/api/v1/assets")
 public class AssetsController {
 
-    AssetService assetService;
+    private final AssetService assetService;
 
     public AssetsController(AssetService assetService){
         this.assetService = assetService;
     }
+
 
     @GetMapping()
     public ResponseEntity<List<AssetDTO>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -31,10 +30,12 @@ public class AssetsController {
                 ResponseEntity.notFound().build();
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<AssetDTO> getAssets(@PathVariable Long id){
         return ResponseEntity.ok(new AssetDTO(assetService.getAssetById(id)));
     }
+
 
     @GetMapping("/get-assets-by-type/{type}")
     public ResponseEntity<Iterable<AssetDTO>> getAssetsByType(@PathVariable String type){
@@ -43,6 +44,7 @@ public class AssetsController {
                 ResponseEntity.ok(assets) :
                 ResponseEntity.noContent().build();
     }
+
 
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
@@ -53,7 +55,6 @@ public class AssetsController {
     }
 
 
-
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody AssetDTO asset){
         AssetDTO assetUpdated = assetService.update(id, asset);
@@ -61,6 +62,7 @@ public class AssetsController {
                 ResponseEntity.ok(assetUpdated) :
                 ResponseEntity.notFound().build();
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
