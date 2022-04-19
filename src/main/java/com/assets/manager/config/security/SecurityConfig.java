@@ -1,5 +1,6 @@
 package com.assets.manager.config.security;
 
+import com.assets.manager.config.CorsFilter;
 import com.assets.manager.config.security.jwt.JwtAuthenticationFilter;
 import com.assets.manager.config.security.jwt.JwtAuthorizationFilter;
 import com.assets.manager.config.security.jwt.handler.AccessDeniedHandler;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -44,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
+                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
                 .addFilter(new JwtAuthenticationFilter(authManager))
                 .addFilter(new JwtAuthorizationFilter(authManager, userDetailsService))
                 .exceptionHandling()
@@ -51,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 
     @Override
