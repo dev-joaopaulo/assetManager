@@ -5,9 +5,9 @@ import java.util.List;
 
 public enum VariableIncomeTypes {
 
-    STOCK("Stock"),
-    FII("FII"),
-    ETF("ETF");
+    STOCK("stock"),
+    FII("fii"),
+    ETF("etf");
 
     private final String typeName;
 

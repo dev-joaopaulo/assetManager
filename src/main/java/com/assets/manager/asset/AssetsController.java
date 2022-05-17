@@ -20,6 +20,13 @@ public class AssetsController {
         this.assetService = assetService;
     }
 
+    @GetMapping("/get-all-assets")
+    public ResponseEntity<List<AssetDTO>> getAllAssets(){
+        List<AssetDTO> assets = assetService.getAssets();
+        return assets.iterator().hasNext() ?
+                ResponseEntity.ok(assets) :
+                ResponseEntity.notFound().build();
+    }
 
     @GetMapping()
     public ResponseEntity<List<AssetDTO>> getAssets(@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -38,7 +45,7 @@ public class AssetsController {
 
 
     @GetMapping("/get-assets-by-type/{type}")
-    public ResponseEntity<Iterable<AssetDTO>> getAssetsByType(@PathVariable String type){
+    public ResponseEntity<List<AssetDTO>> getAssetsByType(@PathVariable String type){
         List<AssetDTO> assets = assetService.getAssetsByType(type);
         return assets.iterator().hasNext() ?
                 ResponseEntity.ok(assets) :

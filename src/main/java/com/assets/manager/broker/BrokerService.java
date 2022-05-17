@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BrokerService {
@@ -14,8 +15,12 @@ public class BrokerService {
     @Autowired
     private BrokerRepository brokerRepository;
 
-    public List<Broker> getBrokers(){
-        return brokerRepository.findAll();
+    public List<BrokerDTO> getBrokers(){
+        return brokerRepository
+                .findAll()
+                .stream()
+                .map(BrokerDTO::new)
+                .collect(Collectors.toList());
     }
 
 

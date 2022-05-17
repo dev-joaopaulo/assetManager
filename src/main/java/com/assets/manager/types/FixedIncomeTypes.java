@@ -5,12 +5,12 @@ import java.util.List;
 
 public enum FixedIncomeTypes {
 
-    TESOURO_DIRETO("Tesouro Direto"),
-    LCI("LCI"),
-    LCA("LCA"),
-    CDB("CDB"),
-    CRI("CRI"),
-    CRA("CRA");
+    TESOURO_DIRETO("tesouro direto"),
+    LCI("lci"),
+    LCA("lca"),
+    CDB("cdb"),
+    CRI("cri"),
+    CRA("cra");
 
     private final String typeName;
 

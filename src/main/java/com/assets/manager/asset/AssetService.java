@@ -34,6 +34,12 @@ public class AssetService {
                 map(AssetDTO::new).collect(Collectors.toList());
     }
 
+    public List<AssetDTO> getAssets() {
+        return assetRepository.
+                findAll().
+                stream().
+                map(AssetDTO::new).collect(Collectors.toList());
+    }
 
     public Asset getAssetById(Long id) {
         return assetRepository.findById(id).orElse(new Asset());

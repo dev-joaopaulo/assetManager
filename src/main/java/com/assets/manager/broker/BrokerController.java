@@ -5,6 +5,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.assets.manager.util.UriUtil.getUri;
 
@@ -22,6 +23,14 @@ public class BrokerController {
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable Long id){
         return ResponseEntity.ok(new BrokerDTO(brokerService.getBrokerById(id)));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<BrokerDTO>> get(){
+        List<BrokerDTO> brokers = brokerService.getBrokers();
+        return brokers.iterator().hasNext()?
+                ResponseEntity.ok(brokers) :
+                ResponseEntity.notFound().build();
     }
 
 

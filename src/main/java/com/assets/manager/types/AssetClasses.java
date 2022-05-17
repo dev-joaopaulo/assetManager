@@ -5,9 +5,9 @@ import java.util.List;
 
 public enum AssetClasses {
 
-    FIXED("Fixed Income"),
-    VARIABLE("Variable Income"),
-    CASH("Cash");
+    FIXED("fixed income"),
+    VARIABLE("variable income"),
+    CASH("cash");
 
     private final String className;
 
