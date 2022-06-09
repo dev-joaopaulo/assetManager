@@ -33,7 +33,6 @@ public class BrokerController {
                 ResponseEntity.notFound().build();
     }
 
-
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity post(@RequestBody BrokerDTO brokerDTO){
@@ -41,4 +40,12 @@ public class BrokerController {
         URI location = getUri(savedBroker.getId());
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        brokerService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -34,6 +34,14 @@ public class BrokerService {
         return new BrokerDTO(brokerRepository.save(toEntity(brokerDTO)));
     }
 
+    public void delete(Long id){
+        Broker broker = brokerRepository.findById(id).orElse(null);
+        if(broker != null){
+            Assert.isTrue(broker.getAssets().size() == 0, "Forbidden - This broker has assets related to it");
+            brokerRepository.deleteById(id);
+        }
+    }
+
 
     public void removeAssetFromBroker(Long brokerId, AssetDTO assetDTO){
         Broker broker =  getBrokerById(brokerId);
