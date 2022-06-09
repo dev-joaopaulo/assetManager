@@ -37,12 +37,10 @@ public class AssetsController {
                 ResponseEntity.notFound().build();
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<AssetDTO> getAssets(@PathVariable Long id){
         return ResponseEntity.ok(new AssetDTO(assetService.getAssetById(id)));
     }
-
 
     @GetMapping("/get-assets-by-type/{type}")
     public ResponseEntity<List<AssetDTO>> getAssetsByType(@PathVariable String type){
@@ -52,7 +50,6 @@ public class AssetsController {
                 ResponseEntity.noContent().build();
     }
 
-
     @PostMapping()
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity create(@RequestBody AssetDTO assetDTO){
@@ -60,7 +57,6 @@ public class AssetsController {
         URI location = getUri(a.getId());
         return ResponseEntity.created(location).build();
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody AssetDTO asset){
@@ -70,10 +66,11 @@ public class AssetsController {
                 ResponseEntity.notFound().build();
     }
 
-
     @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity delete(@PathVariable("id") Long id){
         assetService.delete(id);
         return ResponseEntity.ok().build();
     }
+
 }
