@@ -43,6 +43,16 @@ public class BrokerService {
     }
 
 
+    public BrokerDTO update(Long id, BrokerDTO brokerDTO){
+        Assert.notNull(id, "Not possible to update broker with null id");
+
+        Broker dbBroker = getBrokerById(id);
+        dbBroker.setName(brokerDTO.getName());
+        dbBroker.setDescription(brokerDTO.getDescription());
+        return new BrokerDTO(brokerRepository.save(dbBroker));
+    }
+
+
     public void removeAssetFromBroker(Long brokerId, AssetDTO assetDTO){
         Broker broker =  getBrokerById(brokerId);
         if(broker != null){

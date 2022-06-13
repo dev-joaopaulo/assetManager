@@ -48,4 +48,13 @@ public class BrokerController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity put(@PathVariable("id") Long id,@RequestBody BrokerDTO brokerDTO){
+        BrokerDTO brokerUpdated = brokerService.update(id, brokerDTO);
+        return brokerUpdated != null ?
+                ResponseEntity.ok(brokerUpdated) :
+                ResponseEntity.notFound().build();
+    }
+
 }
